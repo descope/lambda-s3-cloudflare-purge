@@ -15,18 +15,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
-        with:
-          python-version: "3.9"
-      - uses: aws-actions/setup-sam@v2
-      - name: Build
-        shell: bash
-        run: |
-          sam build --use-container
+      # - uses: actions/setup-python@v3
+      #   with:
+      #     python-version: "3.9"
+      # - uses: aws-actions/setup-sam@v2
+      # - name: Build
+      #   shell: bash
+      #   run: |
+      #     sam build --use-container
       - uses: montudor/action-zip@v1
         with:
           # args: sh -c "cd ${GITHUB_WORKSPACE}/. && zip -qq -9 -vr ${GITHUB_WORKSPACE}/s3-cloudflare-purge.zip ./*"
-          args: zip -qq -9 -vr s3-cloudflare-purge.zip .aws-sam/build/CfPurgeFunction
+          # args: zip -qq -9 -vr s3-cloudflare-purge.zip .aws-sam/build/CfPurgeFunction
+          args: "ls ${GITHUB_WORKSPACE}"
       - uses: actions/upload-artifact@v3
         with:
           name: s3-cloudflare-purge

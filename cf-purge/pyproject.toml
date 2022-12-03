@@ -8,12 +8,9 @@ readme = "README.md"
 packages = [{include = "cf_purge"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.9"
 cloudflare = "^2.11.1"
 
-
-[tool.poetry.group.dev.dependencies]
-aws-lambda-typing = "^2.16.2"
 
 [build-system]
 requires = ["poetry-core"]

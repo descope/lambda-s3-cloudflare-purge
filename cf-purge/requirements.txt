@@ -1,2 +1,1 @@
 cloudflare
-aws_lambda_typing

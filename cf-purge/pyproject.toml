@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "cf-purge"
+version = "0.1.0"
+description = ""
+authors = ["Omer Cohen <omer@descope.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "cf_purge"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+cloudflare = "^2.11.1"
+
+
+[tool.poetry.group.dev.dependencies]
+aws-lambda-typing = "^2.16.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

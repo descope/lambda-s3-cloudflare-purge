@@ -27,7 +27,7 @@ jobs:
         with:
           # args: sh -c "cd ${GITHUB_WORKSPACE}/. && zip -qq -9 -vr ${GITHUB_WORKSPACE}/s3-cloudflare-purge.zip ./*"
           # args: zip -qq -9 -vr s3-cloudflare-purge.zip .aws-sam/build/CfPurgeFunction
-          args: ls $GITHUB_WORKSPACE
+          args: sh -c "ls ${GITHUB_WORKSPACE}"
       - uses: actions/upload-artifact@v3
         with:
           name: s3-cloudflare-purge

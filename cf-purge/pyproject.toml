@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cf-purge"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
 authors = ["Omer Cohen <omer@descope.com>"]
 license = "MIT"
@@ -9,7 +9,8 @@ packages = [{include = "cf_purge"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-cloudflare = "2.11.1"
+urllib3 = "1.26.14"
+
 
 
 [build-system]

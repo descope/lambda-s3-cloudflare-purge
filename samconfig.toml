@@ -1,4 +1,4 @@
-version=0.1
+version=0.2
 [default.global.parameters]
 stack_name = "cloudflare-purge"
 env-file = ".env.json"

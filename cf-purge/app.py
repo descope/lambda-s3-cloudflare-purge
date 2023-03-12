@@ -2,7 +2,14 @@ import os
 import json
 import urllib3
 
-http = urllib3.PoolManager()
+retries = urllib3.Retry(
+    total=3,
+    backoff_factor=2,
+    connect=3,
+    status=3,
+    status_forcelist=[404, 405, 413, 429, 501, 502, 503, 504],
+    method_whitelist=['POST'])
+http = urllib3.PoolManager(retries=retries)
 zone = os.environ.get("CLOUDFLARE_ZONE")
 api_token = os.environ.get("CLOUDFLARE_API_TOKEN")
 base_url = os.environ.get("BASE_URL")

@@ -9,7 +9,7 @@ retries = urllib3.Retry(
     status=3,
     status_forcelist=[404, 405, 413, 429, 501, 502, 503, 504],
     method_whitelist=['POST'])
-timeout: os.environ.get("TIMEOUT", 10.0)
+timeout = os.environ.get("TIMEOUT", 10.0)
 http = urllib3.PoolManager(retries=retries)
 zone = os.environ.get("CLOUDFLARE_ZONE")
 api_token = os.environ.get("CLOUDFLARE_API_TOKEN")

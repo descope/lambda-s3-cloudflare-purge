@@ -9,6 +9,7 @@ retries = urllib3.Retry(
     status=3,
     status_forcelist=[404, 405, 413, 429, 501, 502, 503, 504],
     method_whitelist=['POST'])
+timeout: os.environ.get("TIMEOUT", 10.0)
 http = urllib3.PoolManager(retries=retries)
 zone = os.environ.get("CLOUDFLARE_ZONE")
 api_token = os.environ.get("CLOUDFLARE_API_TOKEN")
@@ -32,6 +33,6 @@ def purge(key):
             "Authorization": f"Bearer {api_token}",
         },
         body=json.dumps({"files": [file]}),
-        timeout=1.0,
+        timeout=timeout,
     )
     print(r.status, r.data, key)

@@ -9,7 +9,7 @@ packages = [{include = "cf_purge"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-urllib3 = "1.26.14"
+urllib3 = "1.26.15"
 
 
 

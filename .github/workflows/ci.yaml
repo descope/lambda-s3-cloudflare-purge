@@ -31,7 +31,7 @@ jobs:
           name: s3-cloudflare-purge
           path: s3-cloudflare-purge.zip
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: s3-cloudflare-purge.zip

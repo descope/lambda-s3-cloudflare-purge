@@ -32,7 +32,7 @@ def purge(key):
             "Content-Type": "application/json",
             "Authorization": f"Bearer {api_token}",
         },
-        body=json.dumps({"files": [file]}),
+        body=json.dumps({"prefixes": [file]}),
         timeout=timeout,
     )
     print(r.status, r.data, key)

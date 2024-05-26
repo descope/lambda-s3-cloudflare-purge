@@ -15,23 +15,24 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-node@v4
         with:
-          python-version: "3.9"
-      - uses: aws-actions/setup-sam@v2
-      - name: Build
-        shell: bash
+          node-version-file: package.json
+      - name: Install Deps
+        run: npm install
+      - name: Test
         run: |
-          sam build --use-container
-      - uses: montudor/action-zip@v1
-        with:
-          args: sh -c "cd ${GITHUB_WORKSPACE}/.aws-sam/build/CfPurgeFunction && zip -qq -9 -vr ${GITHUB_WORKSPACE}/s3-cloudflare-purge.zip ./*"
+          npm run test
+      - name: Build
+        run: |
+          npm run build
+      - run: |
+          zip -qq -9 -vr s3-cloudflare-purge.zip ./dist/*
       - uses: actions/upload-artifact@v4
         with:
           name: s3-cloudflare-purge
           path: s3-cloudflare-purge.zip
       - name: Release
-        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: s3-cloudflare-purge.zip
+        run: |
+          gh release upload ${{ github.ref }} s3-cloudflare-purge.zip

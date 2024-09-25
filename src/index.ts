@@ -1,4 +1,5 @@
 import { S3Event } from "aws-lambda";
+import * as path from "node:path";
 
 import { Cloudflare } from "cloudflare";
 
@@ -17,17 +18,21 @@ export const handler = async (event: S3Event) => {
 
   const key = event.Records[0].s3.object.key;
 
-  console.dir({ message: "Purging cache", key, baseUrl: process.env.BASE_URL });
+  console.info({
+    message: "Purging cache",
+    key,
+    baseUrl: process.env.BASE_URL,
+  });
   await cloudflare.cache
     .purge({
       zone_id: process.env.CLOUDFLARE_ZONE_ID!,
-      files: [`${process.env.BASE_URL}/${key}`],
+      prefixes: [`${process.env.BASE_URL}/${path.dirname(key)}`],
     })
     .then((res) =>
-      console.dir({ success: true, message: res }, { depth: null }),
+      console.debug({ success: true, message: res }, { depth: null }),
     )
     .catch((err) => {
-      console.dir({ success: false, message: err }, { depth: null });
+      console.debug({ success: false, message: err }, { depth: null });
       throw new Error(err);
     });
 };

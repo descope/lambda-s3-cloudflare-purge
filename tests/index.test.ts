@@ -1,7 +1,8 @@
 import { afterAll, beforeAll, describe, expect, test } from "@jest/globals";
+import * as path from "node:path";
 
 import nock from "nock";
-import { handler } from "./index";
+import { handler } from "../src/index";
 
 import { afterEach, beforeEach } from "node:test";
 import sampleEvent from "../events/event.json";
@@ -50,8 +51,8 @@ describe("test handler", () => {
       },
     })
       .post(`/client/v4/zones/${process.env.CLOUDFLARE_ZONE_ID}/purge_cache`, {
-        files: [
-          `${process.env.BASE_URL}/${sampleEvent.Records[0].s3.object.key}`,
+        prefixes: [
+          `${process.env.BASE_URL}/${path.dirname(sampleEvent.Records[0].s3.object.key)}`,
         ],
       })
       .reply(200, { success: true });
@@ -70,8 +71,8 @@ describe("test handler", () => {
       },
     })
       .post(`/client/v4/zones/${process.env.CLOUDFLARE_ZONE_ID}/purge_cache`, {
-        files: [
-          `${process.env.BASE_URL}/${sampleEvent.Records[0].s3.object.key}`,
+        prefixes: [
+          `${process.env.BASE_URL}/${path.dirname(sampleEvent.Records[0].s3.object.key)}`,
         ],
       })
       .reply(400, { success: false });

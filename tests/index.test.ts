@@ -43,7 +43,7 @@ describe("test handler", () => {
   test("ensures request is made to cloudflare", async () => {
     process.env.CLOUDFLARE_API_TOKEN = "testToken";
     process.env.CLOUDFLARE_ZONE_ID = "testZone";
-    process.env.BASE_URL = "https://example.com";
+    process.env.BASE_URL = "example.com";
 
     nock("https://api.cloudflare.com", {
       reqheaders: {
@@ -52,7 +52,7 @@ describe("test handler", () => {
     })
       .post(`/client/v4/zones/${process.env.CLOUDFLARE_ZONE_ID}/purge_cache`, {
         prefixes: [
-          `${process.env.BASE_URL}/${path.dirname(sampleEvent.Records[0].s3.object.key)}`,
+          `${path.join(process.env.BASE_URL!, path.dirname(sampleEvent.Records[0].s3.object.key))}`,
         ],
       })
       .reply(200, { success: true });
@@ -63,7 +63,7 @@ describe("test handler", () => {
   test("error reporting", async () => {
     process.env.CLOUDFLARE_API_TOKEN = "testToken";
     process.env.CLOUDFLARE_ZONE_ID = "testZone";
-    process.env.BASE_URL = "https://example.com";
+    process.env.BASE_URL = "example.com";
 
     nock("https://api.cloudflare.com", {
       reqheaders: {
@@ -72,7 +72,7 @@ describe("test handler", () => {
     })
       .post(`/client/v4/zones/${process.env.CLOUDFLARE_ZONE_ID}/purge_cache`, {
         prefixes: [
-          `${process.env.BASE_URL}/${path.dirname(sampleEvent.Records[0].s3.object.key)}`,
+          `${path.join(process.env.BASE_URL!, path.dirname(sampleEvent.Records[0].s3.object.key))}`,
         ],
       })
       .reply(400, { success: false });

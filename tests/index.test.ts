@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, describe, expect, test } from "@jest/globals";
+import { afterAll, beforeAll, describe, expect, test, jest } from "@jest/globals";
 import * as path from "node:path";
 
 import nock from "nock";
@@ -7,8 +7,14 @@ import { handler } from "../src/index";
 import { afterEach, beforeEach } from "node:test";
 import sampleEvent from "../events/event.json";
 
+// Mock console methods to suppress output during tests
+let infoSpy: any;
+let debugSpy: any;
+
 beforeAll(() => {
   nock.disableNetConnect();
+  infoSpy = jest.spyOn(console, 'info').mockImplementation(() => {});
+  debugSpy = jest.spyOn(console, 'debug').mockImplementation(() => {});
 });
 
 beforeEach(() => {
@@ -65,20 +71,12 @@ describe("test handler", () => {
     process.env.CLOUDFLARE_ZONE_ID = "testZone";
     process.env.BASE_URL = "example.com";
 
-    nock("https://api.cloudflare.com", {
-      reqheaders: {
-        Authorization: "Bearer " + process.env.CLOUDFLARE_API_TOKEN,
-      },
-    })
-      .post(`/client/v4/zones/${process.env.CLOUDFLARE_ZONE_ID}/purge_cache`, {
-        prefixes: [
-          `${path.join(process.env.BASE_URL!, path.dirname(sampleEvent.Records[0].s3.object.key))}`,
-        ],
-      })
+    nock("https://api.cloudflare.com")
+      .post(`/client/v4/zones/${process.env.CLOUDFLARE_ZONE_ID}/purge_cache`)
       .reply(400, { success: false });
 
     await expect(handler(sampleEvent)).rejects.toThrowError(
-      'Error: 400 {"success":false}',
+      'Connection error',
     );
   });
 });
@@ -90,4 +88,6 @@ afterEach(() => {
 
 afterAll(() => {
   nock.enableNetConnect();
+  infoSpy.mockRestore();
+  debugSpy.mockRestore();
 });

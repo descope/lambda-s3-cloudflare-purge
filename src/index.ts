@@ -3,6 +3,8 @@ import * as path from "node:path";
 
 import { Cloudflare } from "cloudflare";
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export const handler = async (event: S3Event) => {
   for (const envVar of [
     "CLOUDFLARE_API_TOKEN",
@@ -31,16 +33,34 @@ export const handler = async (event: S3Event) => {
     baseUrl: process.env.BASE_URL,
     prefix,
   });
-  await cloudflare.cache
-    .purge({
-      zone_id: process.env.CLOUDFLARE_ZONE_ID!,
-      prefixes: [prefix],
-    })
-    .then((res) =>
-      console.debug({ success: true, message: res }, { depth: null }),
-    )
-    .catch((err) => {
-      console.debug({ success: false, message: err }, { depth: null });
-      throw new Error(err);
-    });
+
+  const maxRetries = 3;
+  let lastError: any;
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const res = await cloudflare.cache.purge({
+        zone_id: process.env.CLOUDFLARE_ZONE_ID!,
+        prefixes: [prefix],
+      });
+      
+      console.debug({ success: true, message: res }, { depth: null });
+      return; // Success, exit the function
+    } catch (err: any) {
+      lastError = err;
+      console.debug({ 
+        success: false, 
+        message: err, 
+        attempt, 
+        maxRetries 
+      }, { depth: null });
+      
+      if (attempt < maxRetries) {
+        await delay(1000);
+      }
+    }
+  }
+
+  // All retries failed
+  throw new Error(lastError);
 };

@@ -27,7 +27,7 @@
           "arn": "arn:aws:s3:::example-bucket"
         },
         "object": {
-          "key": "pages/Peuc2DA3QqyF3N3BlmIqn1nr0LMFhrw/v2-beta/sign-up-or-in/SC2lmm0w8m35W0BNiFOKtp9pyH9gG.html",
+          "key": "pages/Peuc2DA3QqyF3N3BlmIqn1nr0LMFhrw/v2-beta/sign-up-or-in/SC2lmm0w8m35W0BNiFOKtp9pyH9gX.html",
           "size": 1024,
           "eTag": "0123456789abcdef0123456789abcdef",
           "sequencer": "0A1B2C3D4E5F678901"

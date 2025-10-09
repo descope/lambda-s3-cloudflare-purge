@@ -41,5 +41,5 @@
   "engines": {
     "node": "^22.0.0"
   },
-  "packageManager": "yarn@4.10.1"
+  "packageManager": "yarn@4.10.2"
 }

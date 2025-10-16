@@ -11,8 +11,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@commitlint/cli": "^19.3.0",
-    "@commitlint/config-conventional": "^19.2.2",
+    "@commitlint/cli": "^20.0.0",
+    "@commitlint/config-conventional": "^20.0.0",
     "@jest/globals": "^30.0.0",
     "@types/aws-lambda": "^8.10.138",
     "@types/node": "^22.0.0",

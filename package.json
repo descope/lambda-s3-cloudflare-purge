@@ -30,7 +30,7 @@
     "typescript": "<7"
   },
   "dependencies": {
-    "cloudflare": "^3.2.0"
+    "cloudflare": "^6.0.0"
   },
   "lint-staged": {
     "*.ts": [
